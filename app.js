@@ -41,6 +41,7 @@ function getCookies(req) {
     return parsedCookies;
 };
 
+
 function authToken(req, res, next) {
     const cookies = getCookies(req);
     const token = cookies['token'];
