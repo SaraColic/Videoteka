@@ -9,7 +9,7 @@ const Joi = require('joi');
 const app = express();
 
 var corsOptions = {
-    origin: 'http://127.0.0.1:8001',
+    origin: 'http://127.0.0.1:8002',
     optionsSuccessStatus: 200
 }
 
