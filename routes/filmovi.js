@@ -49,7 +49,7 @@ filmovi.get('/dodaj', authToken, (req, res) => {
     res.sendFile('filmoviDodaj.html', {root: './static/admin/filmovi'})
 })
 
-filmovi.get('/izmeni', authToken, (req, res) => {
+filmovi.get('/izmeni/:id', authToken, (req, res) => {
     res.sendFile('filmoviIzmeni.html', {root: './static/admin/filmovi'})
 })
 

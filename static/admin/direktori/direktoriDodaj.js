@@ -15,7 +15,8 @@ function init() {
             fetch('http://127.0.0.1:8001/direktori', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type':'application/json'
                 },
                 body: JSON.stringify(data),
 
