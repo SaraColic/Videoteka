@@ -15,8 +15,17 @@
     <script src="../admin/direktori/direktoriIzmeni.js"></script>
 </head>
 
-<body>
+<body onload="init()">
     <h1>Izmeni Direktora</h1>
+    <form>
+        <div>
+            Ime: <input type="text" id="ime">
+        </div>
+        <div>
+            Prezime: <input type="text" id="prezime">
+        </div>
+        <button type="submit" id="btn" class="btn btn-primary">Potvrdi</button>
+    </form>
 </body>
 
 </html>

@@ -28,7 +28,7 @@ function init(){
             sezonaId.innerText = e.sezonaId;
             tr.appendChild(sezonaId);
             var izmeni = document.createElement('a');
-            izmeni.setAttribute("href", `/admin/direktori/epizode/${e.id}`)
+            izmeni.setAttribute("href", `/admin/epizode/izmeni/${e.id}`)
             izmeni.innerText = "Izmeni";
             tr.appendChild(izmeni);
             

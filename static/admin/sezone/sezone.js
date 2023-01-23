@@ -31,7 +31,7 @@ function init(){
             serijaId.innerText = e.serijaId;
             tr.appendChild(serijaId);
             var izmeni = document.createElement('a');
-            izmeni.setAttribute("href", `/admin/direktori/sezone/${e.id}`)
+            izmeni.setAttribute("href", `/admin/sezone/izmeni/${e.id}`)
             izmeni.innerText = "Izmeni";
             tr.appendChild(izmeni);
             

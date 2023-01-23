@@ -10,7 +10,7 @@ function init() {
             prezime: document.getElementById('prezime').value
         };
 
-        if(data.ime.length > 0 && data.ime.length >= 0){
+        if(data.ime.length > 0 && data.prezime.length >= 0){
 
             fetch('http://127.0.0.1:8001/direktori', {
                 method: 'POST',

@@ -15,8 +15,17 @@
     <script src="../admin/epizode/epizodeDodaj.js"></script>
 </head>
 
-<body>
+<body onload="init()">
     <h1>Dodaj epizodu</h1>
+    <form>
+        <div>
+            Naziv: <input type="text" id="naziv">
+        </div>
+        <div>
+            Opis: <input type="text" id="opis">
+        </div>
+        <button type="submit" id="btn" class="btn btn-primary">Potvrdi</button>
+    </form>
 </body>
 
 </html>

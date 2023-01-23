@@ -43,7 +43,7 @@ function init(){
             zanrId.innerText = e.zanrId;
             tr.appendChild(zanrId);
             var izmeni = document.createElement('a');
-            izmeni.setAttribute("href", `/admin/direktori/filmovi/${e.id}`)
+            izmeni.setAttribute("href", `/admin/filmovi/izmeni/${e.id}`)
             izmeni.innerText = "Izmeni";
             tr.appendChild(izmeni);
             
