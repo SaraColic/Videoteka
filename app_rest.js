@@ -429,6 +429,18 @@ app.get('/filmovi', (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+app.get('/filmovi/idjevi', (req, res) => {
+    Filmovi.findAll({attributes: ['id']})
+    .then(rows => {
+        idjevi = []
+        rows.forEach(e => {
+            idjevi.push(e.id)
+        })
+        res.json(idjevi)
+    })
+    .catch(err => res.status(500).json(err))
+})
+
 app.get('/filmovi/:id', (req, res) => {
     Filmovi.findOne({where: {id: req.params.id}})
     .then(row => {

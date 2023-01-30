@@ -3,24 +3,16 @@ function init() {
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
 
-    fetch('http://127.0.0.1:8001/direktori/:id')
+    fetch('http://127.0.0.1:8001/admin/direktori/izmeni/:id')
     .then(res => res.json())
     .then(data => {
-        const tabela = document.getElementById("tabela");
         
         data.forEach(e => {
-            var tr = document.createElement('tr');
-            var id = document.createElement('td');
-            id.innerText = e.id;
-            tr.appendChild(id);
-            var ime = document.createElement('td');
+            var ime = document.getElementById("ime");
             ime.innerText = e.ime;
-            tr.appendChild(ime);
-            var prezime = document.createElement('td');
+            var prezime = document.getElementById("prezime");
             prezime.innerText = e.prezime;
-            tr.appendChild(prezime);
 
-            tabela.appendChild(tr);
         })
     })
 

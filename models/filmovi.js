@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const glumiufilmu = require('./glumiufilmu');
 module.exports = (sequelize, DataTypes) => {
   class Filmovi extends Model {
     /**
@@ -13,8 +14,9 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Direktor, {foreignKey: 'direktorId', as: 'direktor'});
       this.belongsTo(Zanrovi, {foreignKey: 'zanrId', as: 'zanr'});
       this.belongsTo(Glumci, {foreignKey: 'glumacId', as: 'glumac'});
-      this.hasMany(Komentari, {foreignKey: 'filmId', as: "komentari", onDelete:'cascade', hooks:true} )
-      this.hasMany(Iznajmljeni, {foreignKey: 'filmId', as: "iznajmljeni", onDelete:'cascade', hooks:true} )
+      this.hasMany(Komentari, {foreignKey: 'filmId', as: "komentari", onDelete:'cascade', hooks:true} );
+      this.hasMany(Iznajmljeni, {foreignKey: 'filmId', as: "iznajmljeni", onDelete:'cascade', hooks:true} );
+      this.hasMany(glumiUFilmu, {foreignKey: 'glumiufilmuId', as: "glumiufilmu", onDelete:'cascade', hooks:true} )
       // define association here
     }
   }

@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.hasMany(Serije, {foreignKey: 'glumacId', as: "serije", onDelete:'cascade', hooks:true} )
       this.hasMany(Filmovi, {foreignKey: 'glumacId', as: "filmovi", onDelete:'cascade', hooks:true} )
+      this.hasMany(glumiUFilmu, {foreignKey: 'glumiufilmuId', as: "glumiufilmu", onDelete:'cascade', hooks:true} )
     }
   }
   Glumci.init({
