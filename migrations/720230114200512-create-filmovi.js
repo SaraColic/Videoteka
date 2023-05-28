@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: DataTypes.INTEGER
       },
+      img: {type: DataTypes.STRING},
+      trajanje: {type: DataTypes.STRING},
+      godina: {type: DataTypes.STRING},
       naziv: {
         type: DataTypes.STRING,
         allowNull: false
@@ -15,6 +18,7 @@ module.exports = {
       opis: {
         type: DataTypes.STRING(10000)
       },
+      tip: {type: DataTypes.STRING},
       video: {
         type: DataTypes.STRING,
         allowNull: false

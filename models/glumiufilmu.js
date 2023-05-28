@@ -16,14 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   glumiUFilmu.init({
-    filmID: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    glumacID: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    }
+  
   }, {
     sequelize,
     modelName: 'glumiUFilmu',

@@ -2,20 +2,32 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('glumiUFilmus', {
+    await queryInterface.createTable('glumiUSerijis', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      filmID: {
+      serijaId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Filmovis',
+          key: 'id',
+          as: 'filmId',
+        }
       },
-      glumacID: {
+      glumacId: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Glumcis',
+          key: 'id',
+          as: 'glumacId',
+        }
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('glumiUFilmus');
+    await queryInterface.dropTable('glumiUSerijis');
   }
 };

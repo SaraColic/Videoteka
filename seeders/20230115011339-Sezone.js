@@ -38,6 +38,48 @@ module.exports = {
         cena: 200,
         serijaId: 3
       },
+      {
+        naziv: 'Sezona 2',
+        opis: '',
+        ocena: 1,
+        cena: 200,
+        serijaId: 3
+      },
+      {
+        naziv: 'Sezona 1',
+        opis: '',
+        ocena: 1,
+        cena: 200,
+        serijaId: 4
+      },
+      {
+        naziv: 'Sezona 1',
+        opis: '',
+        ocena: 1,
+        cena: 200,
+        serijaId: 5
+      },
+      {
+        naziv: 'Sezona 2',
+        opis: '',
+        ocena: 1,
+        cena: 200,
+        serijaId: 5
+      },
+      {
+        naziv: 'Sezona 3',
+        opis: '',
+        ocena: 1,
+        cena: 200,
+        serijaId: 5
+      },
+      {
+        naziv: 'Sezona 1',
+        opis: '',
+        ocena: 1,
+        cena: 200,
+        serijaId: 6
+      },
     ], {});
   },
 

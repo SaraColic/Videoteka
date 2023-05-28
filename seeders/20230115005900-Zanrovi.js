@@ -23,6 +23,14 @@ module.exports = {
         naziv: 'akcija',
         opis: 'Akcioni film, ili samo akcija, je filmski žanr u kome akcione sekvence, poput borbe, kaskaderskih scena, automobilskih potera ili eksplozija, imaju prednost pred elementima kao što su karakterizacija ili kompleksna priča.'
       },
+      {
+        naziv: 'triler',
+        opis: 'Akcioni film, ili samo akcija, je filmski žanr u kome akcione sekvence, poput borbe, kaskaderskih scena, automobilskih potera ili eksplozija, imaju prednost pred elementima kao što su karakterizacija ili kompleksna priča.'
+      },
+      {
+        naziv: 'fantastika',
+        opis: 'Akcioni film, ili samo akcija, je filmski žanr u kome akcione sekvence, poput borbe, kaskaderskih scena, automobilskih potera ili eksplozija, imaju prednost pred elementima kao što su karakterizacija ili kompleksna priča.'
+      },
 
     ])
   },

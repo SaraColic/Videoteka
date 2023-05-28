@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate({Filmovi, Serije}) {
       // define association here
       this.hasMany(Serije, {foreignKey: 'zanrId', as: "serije", onDelete:'cascade', hooks:true} )
-      this.hasMany(Filmovi, {foreignKey: 'zanrId', as: "filmovi", onDelete:'cascade', hooks:true} )
+      this.hasMany(Filmovi, {foreignKey: 'zanrId', as: "zanr", onDelete:'cascade', hooks:true} )
     }
   }
   Zanrovi.init({

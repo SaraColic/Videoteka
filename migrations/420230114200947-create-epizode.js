@@ -13,6 +13,7 @@ module.exports = {
         allowNull: false
       },
       opis: DataTypes.STRING(10000),
+      img: {type: DataTypes.STRING},
       video: {
         type: DataTypes.STRING(4000),
         allowNull: false

@@ -1,13 +1,28 @@
 const express = require("express");
-const { sequelize, Zanrovi, Direktor, Glumci, Serije, Sezone, Epizode, Filmovi, Korisnici, Komentari, Iznajmljeni } = require("./models");
+const { sequelize, Zanrovi, Direktor, Glumci, Serije, Sezone, Epizode, Filmovi, Korisnici, Komentari, Iznajmljeni, glumiUFilmu, glumiUSeriji, Korpa, Sequelize } = require("./models");
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
+const { Server } = require("socket.io");
+const http = require('http');
 
 const app = express();
+// app.use((req, res, next) => {
+//     res.header("Access-Control-Allow-Credentials", true);
+//     next();
+// });
+// const server = http.createServer(app);
+// const io = new Server(server, {
+//     cors: {
+//         origin: '*',
+//         methods: ['GET', 'POST'],
+//         credentials: true
+//     },
+//     allowEIO3: true
+// });
 
 var corsOptions = {
-    origin: 'http://127.0.0.1:8002',
+    origin: ['http://127.0.0.1:8002', 'http://localhost:8080'],
     optionsSuccessStatus: 200
 }
 
@@ -15,6 +30,8 @@ var corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
+Seq = require('sequelize');
+const Op = Seq.Op;
 
 const Joi = require('joi');
 
@@ -244,16 +261,43 @@ app.delete('/glumci/:id', authZaposleni, (req, res) => {
 // Serije
 
 app.get('/serije', (req, res) => {
-    Serije.findAll()
+    Serije.findAll({include: ['zanr', 'direktor', 'sezone']})
     .then(rows => res.json(rows))
     .catch(err => res.status(500).json(err))
 })
 
+app.get('/serije/search/:query', (req, res) => {
+    Serije.findAll({include: ['zanr', 'direktor'], where: {naziv:{ [Op.like]: `%${req.params.query}%` }}})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/serije/broj', (req, res) => {
+    Serije.findAll()
+    .then(rows => {
+        
+        res.json(rows.length)
+    })
+    .catch(err => res.status(500).json(err))
+})
+
 app.get('/serije/:id', (req, res) => {
-    Serije.findOne({where: {id: req.params.id}})
+    Serije.findOne({where: {id: req.params.id}, include: ['zanr', 'direktor', 'sezone']})
     .then(row => {
         if(row == null){
             res.json({msg: `Serija sa id-jem ${req.params.id} ne postoji`})
+        }else{
+            res.json(row)
+        }
+    })
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/serije/zanr/:zanrId', (req, res) => {
+    Serije.findAll({where: {zanrId: req.params.zanrId}, include: ['zanr', 'direktor', 'sezone']})
+    .then(row => {
+        if(row == null){
+            res.json({msg: `Serija ovog zanra ne postoji`})
         }else{
             res.json(row)
         }
@@ -382,6 +426,18 @@ app.get('/epizode/:id', (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+app.get('/epizode/sezone/:sezonaId', (req, res) => {
+    Epizode.findAll({where: {sezonaId: req.params.sezonaId}, include: ['sezona']})
+    .then(row => {
+        if(row == null){
+            res.json({msg: `Epizode ove sezone ne postoje`})
+        }else{
+            res.json(row)
+        }
+    })
+    .catch(err => res.status(500).json(err))
+})
+
 const epizodeSema = Joi.object().keys({
     naziv: Joi.string().trim().min(0).max(255).required(),
     opis: Joi.string().max(10000),
@@ -422,30 +478,47 @@ app.delete('/epizode/:id', authZaposleni, (req, res) => {
 })
 
 // Filmovi
+//{include : [{ model: bar, attributes: attributes}]}
 
 app.get('/filmovi', (req, res) => {
-    Filmovi.findAll()
+    Filmovi.findAll({include: ['zanr', 'direktor']})
     .then(rows => res.json(rows))
     .catch(err => res.status(500).json(err))
 })
 
-app.get('/filmovi/idjevi', (req, res) => {
-    Filmovi.findAll({attributes: ['id']})
+
+app.get('/filmovi/search/:query', (req, res) => {
+    Filmovi.findAll({include: ['zanr', 'direktor'], where: {naziv:{ [Op.like]: `%${req.params.query}%` }}})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/filmovi/broj', (req, res) => {
+    Filmovi.findAll()
     .then(rows => {
-        idjevi = []
-        rows.forEach(e => {
-            idjevi.push(e.id)
-        })
-        res.json(idjevi)
+        
+        res.json(rows.length)
     })
     .catch(err => res.status(500).json(err))
 })
 
 app.get('/filmovi/:id', (req, res) => {
-    Filmovi.findOne({where: {id: req.params.id}})
+    Filmovi.findOne({where: {id: req.params.id}, include: ['zanr', 'direktor']})
     .then(row => {
         if(row == null){
             res.json({msg: `Film sa id-jem ${req.params.id} ne postoji`})
+        }else{
+            res.json(row)
+        }
+    })
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/filmovi/zanr/:zanrId', (req, res) => {
+    Filmovi.findAll({where: {zanrId: req.params.zanrId}, include: ['zanr', 'direktor']})
+    .then(row => {
+        if(row == null){
+            res.json({msg: `Film ovog zanra ne postoji`})
         }else{
             res.json(row)
         }
@@ -567,6 +640,30 @@ app.get('/komentari', authToken, (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+app.get('/komentari/poFilmu/:id', (req, res) => {
+    Komentari.findAll({where: {filmId: req.params.id}, include: ['korisnik']})
+    .then(row => {
+        if(row == null){
+            res.json({msg: `Komenatar sa id-jem ${req.params.id} ne postoji`})
+        }else{
+            res.json(row)
+        }
+    })
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/komentari/poEpizodi/:id', (req, res) => {
+    Komentari.findAll({where: {epizodaId: req.params.id}})
+    .then(row => {
+        if(row == null){
+            res.json({msg: `Komenatar sa id-jem ${req.params.id} ne postoji`})
+        }else{
+            res.json(row)
+        }
+    })
+    .catch(err => res.status(500).json(err))
+})
+
 app.get('/komentari/:id', authToken, (req, res) => {
     Komentari.findOne({where: {id: req.params.id}})
     .then(row => {
@@ -626,6 +723,24 @@ app.get('/iznajmljeni', authToken, (req, res) => {
     .catch(err => res.status(500).json(err))
 })
 
+app.get('/iznajmljeni/odKorisnika', authToken, (req, res) => {
+    Iznajmljeni.findAll({where: {korisnikId: req.korisnik.id}, include: ['film', 'serija']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/iznajmljeni/film/odKorisnika/:filmId', authToken, (req, res) => {
+    Iznajmljeni.findOne({where: {korisnikId: req.korisnik.id, filmId: req.params.filmId}, include: ['film', 'serija']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/iznajmljeni/serija/odKorisnika/:serijaId', authToken, (req, res) => {
+    Iznajmljeni.findOne({where: {korisnikId: req.korisnik.id, serijaId: req.params.serijaId}, include: ['film', 'serija']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
 app.get('/iznajmljeni/:id', authToken, (req, res) => {
     Iznajmljeni.findOne({where: {id: req.params.id}})
     .then(row => {
@@ -641,16 +756,29 @@ app.get('/iznajmljeni/:id', authToken, (req, res) => {
 const iznajmljeniSema = Joi.object().keys({
     datumIsteka: Joi.date().raw().required(),
     filmId: Joi.number(),
-    sezonaId: Joi.number(),
-    korisnikId: Joi.number().required()
+    serijaId: Joi.number(),
+    //korisnikId: Joi.number().required()
 })
 
-app.post('/iznajmljeni', authToken, (req, res) => {
+app.post('/iznajmljeni/serija', authToken, (req, res) => {
     Joi.validate(req.body, iznajmljeniSema, (err, result) => {
         if(err){
             res.status(400).send(err.details);
         }else{
-            Iznajmljeni.create( {datumIsteka: req.body.datumIsteka, filmId: req.body.filmId, sezonaId: req.body.sezonaId, 
+            Iznajmljeni.create( {datumIsteka: req.body.datumIsteka, serijaId: req.body.serijaId, 
+                korisnikId: req.korisnik.id} )
+                .then( rows => res.json(rows) )
+                .catch(err => res.status(500).json(err));
+        }
+    })
+})
+
+app.post('/iznajmljeni/serija/zaposleni', authZaposleni, (req, res) => {
+    Joi.validate(req.body, iznajmljeniSema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details);
+        }else{
+            Iznajmljeni.create( {datumIsteka: req.body.datumIsteka, serijaId: req.body.serijaId, 
                 korisnikId: req.body.korisnikId} )
                 .then( rows => res.json(rows) )
                 .catch(err => res.status(500).json(err));
@@ -658,12 +786,37 @@ app.post('/iznajmljeni', authToken, (req, res) => {
     })
 })
 
-app.put('/iznajmljeni/:id', authZaposleni, (req, res) => {
+app.post('/iznajmljeni/film', authToken, (req, res) => {
     Joi.validate(req.body, iznajmljeniSema, (err, result) => {
         if(err){
             res.status(400).send(err.details);
         }else{
-            Iznajmljeni.update( {datumIsteka: req.body.datumIsteka, filmId: req.body.filmId, sezonaId: req.body.sezonaId, 
+            Iznajmljeni.create( {datumIsteka: req.body.datumIsteka, filmId: req.body.filmId,
+                korisnikId:  req.korisnik.id} )
+                .then( rows => res.json(rows) )
+                .catch(err => res.status(500).json(err));
+        }
+    })
+})
+
+app.put('/iznajmljeni/serija/:id', authZaposleni, (req, res) => {
+    Joi.validate(req.body, iznajmljeniSema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details);
+        }else{
+            Iznajmljeni.update( {datumIsteka: req.body.datumIsteka, serijaId: req.body.serijaId, 
+                korisnikId: req.body.korisnikId}, {where: {id: req.params.id}} )
+                .then( rows => res.json(rows) )
+                .catch(err => res.status(500).json(err));
+        }
+    })
+})
+app.put('/iznajmljeni/film/:id', authZaposleni, (req, res) => {
+    Joi.validate(req.body, iznajmljeniSema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details);
+        }else{
+            Iznajmljeni.update( {datumIsteka: req.body.datumIsteka, filmId: req.body.filmId, 
                 korisnikId: req.body.korisnikId}, {where: {id: req.params.id}} )
                 .then( rows => res.json(rows) )
                 .catch(err => res.status(500).json(err));
@@ -678,7 +831,120 @@ app.delete('/iznajmljeni/:id', authZaposleni, (req, res) => {
 })
 
 
+//Korpa
+app.get('/korpa', authToken, (req, res) => {
+    Korpa.findAll()
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
 
+app.get('/korpa/odKorisnika', authToken, (req, res) => {
+    Korpa.findAll({where: {korisnikId: req.korisnik.id}, include: ['film', 'serija']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/korpa/film/odKorisnika/:filmId', authToken, (req, res) => {
+    Korpa.findOne({where: {korisnikId: req.korisnik.id, filmId: req.params.filmId}, include: ['film', 'serija']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.get('/korpa/serija/odKorisnika/:serijaId', authToken, (req, res) => {
+    Korpa.findOne({where: {korisnikId: req.korisnik.id, serijaId: req.params.serijaId}, include: ['film', 'serija']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+const korpaSema = Joi.object().keys({
+    filmId: Joi.number(),
+    serijaId: Joi.number(),
+    //korisnikId: Joi.number().required()
+})
+
+app.post('/korpa/serija', authToken, (req, res) => {
+    Joi.validate(req.body, korpaSema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details);
+        }else{
+            Korpa.create( {serijaId: req.body.serijaId, korisnikId: req.korisnik.id} )
+                .then( rows => res.json(rows) )
+                .catch(err => res.status(500).json(err));
+        }
+    })
+})
+
+app.post('/korpa/film', authToken, (req, res) => {
+    Joi.validate(req.body, korpaSema, (err, result) => {
+        if(err){
+            res.status(400).send(err.details);
+        }else{
+            Korpa.create( { filmId: req.body.filmId, korisnikId: req.korisnik.id} )
+                .then( rows => res.json(rows) )
+                .catch(err => res.status(500).json(err));
+        }
+    })
+})
+
+
+app.delete('/korpa/korisnik', authToken, (req, res) => {
+    Korpa.destroy({where: {korisnikId: req.korisnik.id}})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+app.delete('/korpa/:id', authToken, (req, res) => {
+    Korpa.destroy({where: {id: req.params.id}})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+
+
+
+// GlumiUFilmu
+app.get('/glumiUFilmu/:id', (req, res) => {
+    glumiUFilmu.findAll({where: {filmId: req.params.id}, include: ['glumac']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+//GlumiUSeriji
+
+app.get('/glumiUSeriji/:id', (req, res) => {
+    glumiUSeriji.findAll({where: {serijaId: req.params.id}, include: ['glumac']})
+    .then(rows => res.json(rows))
+    .catch(err => res.status(500).json(err))
+})
+
+// function authSocket(msg, next) {
+//     if (msg[1].token == null) {
+//         next(new Error("Not authenticated"));
+//     } else {
+//         jwt.verify(msg[1].token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+//             if (err) {
+//                 next(new Error(err));
+//             } else {
+//                 msg[1].user = user;
+//                 next();
+//             }
+//         });
+//     }
+// }
+
+// io.on('connection', socket => {
+//     socket.use(authSocket);
+ 
+//     socket.on('comment', msg => {
+//         Komentari.create({ tekst: msg.tekst, korisnikId: msg.user.korisnikId, filmId: msg.filmId , epizodaId: msg.epizodaId})
+//             .then( rows => {
+//                 Komentari.findOne({ where: { id: rows.id }, include: ['korisnik'] })
+//                     .then( msg => io.emit('comment', JSON.stringify(msg)) ) 
+//             }).catch( err => res.status(500).json(err) );
+//     });
+
+//     socket.on('error', err => socket.emit('error', err.message) );
+// });
 app.listen({ port: 8001 }, async () => {
     await sequelize.authenticate();
 });

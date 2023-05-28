@@ -1,5 +1,5 @@
 const express = require('express');
-const { sequelize } = require('./models');
+const { sequelize, Komentari } = require('./models');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -13,8 +13,29 @@ const korisnici = require('./routes/korisnici');
 const serije = require('./routes/serije');
 const sezone = require('./routes/sezone');
 const zanrovi = require('./routes/zanrovi');
+// const cors = require('cors');
+
+const http = require('http');
+// const { Server } = require("socket.io");
+
+const history = require('connect-history-api-fallback');
+
 
 const app = express();
+const server = http.createServer(app);
+// const io = new Server(server, {
+//     cors: {
+//         origin: '*',
+//         methods: ['GET', 'POST'],
+//         credentials: true
+//     },
+//     allowEIO3: true
+// });
+// var corsOptions = {
+//     origin: '',
+//     optionsSuccessStatus: 200
+// }
+// app.use(cors(corsOptions));
 
 app.use('/admin/direktori', direktori);
 app.use('/admin/epizode', epizode);
@@ -45,15 +66,15 @@ function authToken(req, res, next) {
     const cookies = getCookies(req);
     const token = cookies['token'];
   
-    if (token == null) return res.redirect(301, '/login');
+    if (token == null) return res.redirect(301, '/loginn');
 
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     
-        if (err) return res.redirect(301, '/login');
+        if (err) return res.redirect(301, '/loginn');
         console.log(user.tip);
         if(user.tip == 2){
             res.cookie = `token=;SameSite=Lax`;
-            res.redirect(301, '/login');
+            res.redirect(301, '/loginn');
         }
 
         req.user = user;
@@ -61,22 +82,64 @@ function authToken(req, res, next) {
         next();
     });
 }
-
+/*
 app.get('/', authToken, (req, res) => {
     res.sendFile('index.html', { root: './static' });
 });
-
-
-app.get('/login', (req, res) => {
+*/
+app.get('/loginn', (req, res) => {
     res.sendFile('login.html', { root: './static' });
 });
-
 app.get('/admin', authToken, (req, res) => {
     res.sendFile('index.html', { root: './static' });
 });
-
+/*
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(express.static('public'));
+*/
+
+
+// function authSocket(msg, next) {
+//     if (msg[1].token == null) {
+//         next(new Error("Not authenticated"));
+//     } else {
+//         jwt.verify(msg[1].token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+//             if (err) {
+//                 next(new Error(err));
+//             } else {
+//                 msg[1].user = user;
+//                 next();
+//             }
+//         });
+//     }
+// }
+
+
+// io.on('connection', socket => {
+//     socket.use(authSocket);
+ 
+//     socket.on('komentar', msg => {
+//         Komentari.create({ tekst: msg.tekst, filmId: msg.filmId, korisnikId: msg.korisnik.korisnikId })
+//             .then( rows => {
+//                 Komentari.findOne({ where: { id: rows.id }, include: ['korisnik'] })
+//                     .then( msgg => io.emit('komentar', JSON.stringify(msgg)) ) 
+//             }).catch( err => res.status(500).json(err) );
+//     });
+
+//     socket.on('error', err => socket.emit('error', err.message) );
+// });
+
+
+const staticMdl = express.static(path.join(__dirname, 'dist'));
+
+app.use(staticMdl);
+
+app.use(history({ index: '/index.html' }));
+
+app.use(staticMdl);
+
+
+
 app.listen({ port: 8002 }, async () => {
     await sequelize.authenticate();
 });

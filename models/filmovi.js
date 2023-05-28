@@ -2,7 +2,6 @@
 const {
   Model
 } = require('sequelize');
-const glumiufilmu = require('./glumiufilmu');
 module.exports = (sequelize, DataTypes) => {
   class Filmovi extends Model {
     /**
@@ -10,13 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Glumci, Direktor, Zanrovi, Komentari, Iznajmljeni}) {
+    static associate({Direktor, Zanrovi, Komentari, Iznajmljeni, glumiUFilmu, Korpa}) {
       this.belongsTo(Direktor, {foreignKey: 'direktorId', as: 'direktor'});
       this.belongsTo(Zanrovi, {foreignKey: 'zanrId', as: 'zanr'});
-      this.belongsTo(Glumci, {foreignKey: 'glumacId', as: 'glumac'});
       this.hasMany(Komentari, {foreignKey: 'filmId', as: "komentari", onDelete:'cascade', hooks:true} );
       this.hasMany(Iznajmljeni, {foreignKey: 'filmId', as: "iznajmljeni", onDelete:'cascade', hooks:true} );
-      this.hasMany(glumiUFilmu, {foreignKey: 'glumiufilmuId', as: "glumiufilmu", onDelete:'cascade', hooks:true} )
+      this.hasMany(glumiUFilmu, {foreignKey: 'filmId', as: "glumiufilmu", onDelete:'cascade', hooks:true} );
+      this.hasMany(Korpa, {foreignKey: 'filmId', as: "korpa", onDelete:'cascade', hooks:true} );
       // define association here
     }
   }
@@ -26,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     opis: DataTypes.STRING(10000),
+    tip: {type: DataTypes.STRING},
     video: {
       type: DataTypes.STRING,
       allowNull: false
@@ -38,6 +38,9 @@ module.exports = (sequelize, DataTypes) => {
         max:10
       }
     },
+    img: {type: DataTypes.STRING},
+    trajanje: {type: DataTypes.STRING},
+    godina: {type: DataTypes.STRING},
     cena:{
        type: DataTypes.INTEGER,
        allowNull: true,

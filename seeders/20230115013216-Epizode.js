@@ -6,32 +6,128 @@ module.exports = {
       {
         naziv: '1',
         opis: '',
-        video: 'https://hqq.to/e/enNEUjNvbi9SL005K1JoRE5zOENzdz09',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
         sezonaId: 1
       },
       {
         naziv: '2',
         opis: '',
-        video: 'https://hqq.to/e/ZzR6TUJ2bkJTeERkcjF5VlMzenArdz09',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
         sezonaId: 1
       },
       {
         naziv: '3',
         opis: '',
-        video: 'https://hqq.to/e/dUgyVzZxUkZDR0dHVXNkUEtMdXMrdz09',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
         sezonaId: 1
       },
       {
         naziv: '4',
         opis: '',
-        video: 'https://hqq.to/e/L0JuSWpWZmNoWG0rUXdQditmdXRidz09',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
         sezonaId: 1
       },
       {
         naziv: '5',
         opis: '',
-        video: 'https://hqq.to/e/bzV0THpnVG9UWTJwWi83VTJPWnFCdz09',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
         sezonaId: 1
+      },
+      {
+        naziv: '6',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 1
+      },
+      {
+        naziv: '7',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 1
+      },
+      {
+        naziv: '8',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 1
+      },
+      {
+        naziv: '9',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 1
+      },
+      {
+        naziv: '1',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 2
+      },
+      {
+        naziv: '2',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 2
+      },
+      {
+        naziv: '3',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 2
+      },
+      {
+        naziv: '4',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 2
+      },
+      {
+        naziv: '5',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 2
+      },
+      {
+        naziv: '1',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 3
+      },
+      {
+        naziv: '2',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 3
+      },
+      {
+        naziv: '3',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 3
+      },
+      {
+        naziv: '4',
+        opis: '',
+        img: 'https://i.redd.it/bds763n51sz41.jpg',
+        video: 'https://www.youtube.com/embed/aDrsItJ_HU4',
+        sezonaId: 3
       },
     ], {});
   },

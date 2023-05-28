@@ -3,22 +3,18 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Iznajmljeni extends Model {
-
+  class Korpa extends Model {
     static associate({Filmovi, Serije, Korisnici}) {
       this.belongsTo(Filmovi, {foreignKey: 'filmId', as: 'film'});
       this.belongsTo(Serije, {foreignKey: 'serijaId', as: 'serija'});
       this.belongsTo(Korisnici, {foreignKey: 'korisnikId', as: 'korisnik'});
     }
   }
-  Iznajmljeni.init({
-    datumIsteka: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
-    }
+  Korpa.init({
+    
   }, {
     sequelize,
-    modelName: 'Iznajmljeni',
+    modelName: 'Korpa',
   });
-  return Iznajmljeni;
+  return Korpa;
 };

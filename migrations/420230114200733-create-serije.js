@@ -15,6 +15,9 @@ module.exports = {
       opis: {
         type: DataTypes.STRING(10000)
       },
+      tip: {type: DataTypes.STRING},
+      img: {type: DataTypes.STRING},
+      godina: {type: DataTypes.STRING},
       ocena: {
         type: DataTypes.FLOAT,
         allowNull: false,
@@ -23,6 +26,17 @@ module.exports = {
           max:10
         }
       },
+      cena:{
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+         min:0
+        }
+     },
+     besplatan: {
+       type: DataTypes.BOOLEAN,
+       defaultValue: false
+     },
       direktorId:{
         type: DataTypes.INTEGER,
         allowNull: false,
