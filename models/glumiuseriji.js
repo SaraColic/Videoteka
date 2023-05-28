@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   glumiUSeriji.init({
    
+    
   }, {
     sequelize,
     modelName: 'glumiUSeriji',
